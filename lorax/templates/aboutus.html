@@ -1,0 +1,57 @@
+{% load static %}
+<html>
+<head>
+  <link rel="stylesheet" href="{%static 'css/abtus.css' %}">
+</head>
+<div class="about-section">
+  <h1>About Us Page</h1>
+  <p>The team of developers which created this platform.</p>
+  <p>Resize the browser window to see that this page is responsive by the way.</p>
+</div>
+
+<h2 style="text-align:center">Our Team</h2>
+<div class="row">
+  <div class="column">
+    <div class="card">
+      <img src="{% static "images/narru.jpg" %}" alt="Jane" style="width:100%">
+      <div class="container">
+        <h2>Naresh Kumar</h2>
+        <p class="title">Developer 1</p>
+        <p>Naresh Kumar is the first developer in the group.</p>
+        <p>naresh0839@gmail.com</p>
+        <p><button class="button"><a href="https://www.linkedin.com/in/naresh-kumar-8628b91b7/">Contact</a></button></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="{% static "images/zuhu.jpg" %}" alt="Mike" style="width:100%">
+      <div class="container">
+        <h2>Md Zuhair</h2>
+        <p class="title">Developer 2</p>
+        <p>Md Zuhair is the second developer of the group</p>
+        <p>mdzuhair66@gmail.com</p>
+        <p><button class="button"><a href="https://www.linkedin.com/in/md-zuhair-6926591a5/">Contact</a></button></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="{% static "images/shaan.jpg" %}" alt="John" style="width:100%">
+      <div class="container">
+        <h2>Shaan Kumar</h2>
+        <p class="title">Developer 3</p>
+        <p>Shaan Kumar is the third developer in the group</p>
+        <p>shaan123rock@gmail.com</p>
+        <p><button class="button"><a href="https://www.linkedin.com/in/shaan-kumar-9840b8192/">Contact</a></button></p>
+      </div>
+    </div>
+  </div>
+  <center>
+  <p>Go Back!!   <a href="/home/">Home</a></p>
+  </center>
+  
+</div>
+</html>

@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Lorax | Home</title>
+	<link rel="stylesheet" href="{% static 'css/home.css' %}" /> 
+</head>
+<body>
+	<header>
+    	<div class="main">
+    		<div class="logo">
+                <img src="{% static "images/logo.png" %}" alt="Lorax">
+            </div>
+            <ul>
+    			<li class="active"><a href="/home/">Home</a></li>
+    			<li><a href="/login/">Login</a></li>
+    			<li><a href="/signup/">Sign Up</a></li>
+    			<li><a href="/aboutus/">About Us</a></li>
+    		</ul>
+    	</div>
+        <div class="title">
+            <h1>RAILWAY MANAGEMENT SYSTEM</h1>
+        </div>
+		<div id = "login" class="button">
+			<a href="/login/" class="btn">LOGIN</a>
+			<a href="/signup/" class="btn">SIGN UP</a>
+		</div>
+	</header>
+</body>
+</html>

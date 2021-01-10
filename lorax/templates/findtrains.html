@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lorax | Train between Two Stations</title>
+  <link rel="stylesheet" href="{% static 'css/findtrains.css' %}" /> 
+	<link rel="stylesheet" href="{% static 'css/form_login.css' %}" type="text/css" media="all" />
+</head>
+<body>  
+	<center>    
+    <section class="w3l-forms-23">
+		<div class="forms23-block-hny">
+			<div class="wrapper">
+				<a class="logo" href="#">
+					  <img src="{% static 'images/logo.png' %}" alt="Your logo" title="Your logo" style="height:100px;" />
+				</a> 
+				<br>
+				<div class="d-grid forms23-grids">
+					<div class="form23">
+						<div class="bottom-content">
+							<h3> Train Info </h3>
+							<br>
+							<form action="#" method="POST"> {% csrf_token %}
+								<input type="text" name="fstation" class="input-form" placeholder="STATION CODE 1"
+										required="required" />
+								<input type="text" name="sstation" class="input-form" placeholder="STATION CODE 2"
+										required="required" />
+								<button type="submit" class="loginhny-btn btn">Submit</button>
+							</form>
+              				<p>Go back!! <a href="/dashboard/">Dashboard</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+  </center>   
+  <center>
+  	{% if show %}
+	  <br>
+	<h2>Trains Available</h2>
+	<br>
+	{% for trainno in trains %}
+	<i>{{trainno.0}}</i><br>
+	{% endfor %}<br>
+	<h4>To know more about these trains.</h4><br>
+	<a href="/traininfo/"> <button>Click here!</button></a>
+	<br><br>
+	{% endif %}
+  </center>
+</body>
+</html>
+
+

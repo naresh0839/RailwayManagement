@@ -1,0 +1,58 @@
+input[type=submit] 
+{
+    background-color: blue; /* Green */
+    border: none;
+    color: white;
+    padding: 7px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+}
+
+body {
+	background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../images/banner1.jpg");
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+
+button {
+    background-color: green; /* Green */
+    border: none;
+    color: white;
+    padding: 7px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+}
+
+b {
+    color: orange;
+}
+
+h1 {
+    text-align: center;
+    color: black;
+    font-size: 4vw;
+}
+h2 {
+    text-align: center;
+    color: white;
+    font-size: 2vw;
+}
+th {
+    background-color: blue;
+    color: white;
+}
+
+td {
+    background-color: green;
+    color: white;
+}
+
+th, td {
+    padding: 5px;
+    text-align: left;
+}

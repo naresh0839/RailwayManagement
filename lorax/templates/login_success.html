@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Lorax | Dashboard</title>
+	<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/login_success.css' %}" />  
+</head>
+<body>
+	<header>
+    	<div class="main">
+    		<div class="logo">
+                <img src="{% static "images/logo.png" %}" alt="Lorax">
+            </div>
+            <ul>
+    			<li class="active"><a href="/logout/">Logout</a></li>
+    		</ul>
+    	</div>
+        <div class="title">
+            <h1>Hello </b>{{user.username}}</b></h1><br><br>
+        </div>
+		<div id = "login" class="button">
+			<a href="/traininfo/" class="btn">Train Info</a>
+			<a href="/findtrains/" class="btn">Train b/w two stations</a>
+			<a href="/ticket/" class="btn">Book a ticket</a>
+            <a href="/download_ticket/" class="btn">Download Ticket</a>
+		</div>
+	</header>
+</body>
+</html>

@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lorax | Download Ticket</title>
+  <link rel="stylesheet" href="{% static 'css/traininfo.css' %}" /> 
+	<link rel="stylesheet" href="{% static 'css/form_login.css' %}" type="text/css" media="all" />
+</head>
+<body>  
+  <center>    
+    <section class="w3l-forms-23">
+		<div class="forms23-block-hny">
+			<div class="wrapper">
+				<a class="logo" href="#">
+					  <img src="{% static 'images/logo.png' %}" alt="Your logo" title="Your logo" style="height:100px;" />
+				</a> 
+				<br>
+				<div class="d-grid forms23-grids">
+					<div class="form23">
+						<div class="bottom-content">
+							<h3> Download Ticket </h3>
+							<br>
+							<form action="#" method="POST"> {% csrf_token %}
+								<input type="number" name="ticketno" class="input-form" placeholder="Ticket Number"
+										required="required" />
+								<button type="submit" class="loginhny-btn btn">Submit</button>
+							</form>
+              <p>Go back!! <a href="/dashboard/">Dashboard</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+  </center>
+  {% if show %}
+  <br>
+  <h2>Ticket Number</h2>
+  <br>
+  <h1>{{ticket.0}}</h1>
+  <br>
+ <table border = 1, style="width:100%">
+  <tr>
+    <th>Ticket Number</th>
+    <th>Train Number</th>
+    <th>Date of Journey</th>
+    <th>Username</th>
+  </tr>
+  <tr>
+    <td>{{ticket.0}}</td>
+    <td>{{ticket.1}}</td>
+    <td>{{ticket.2}}</td>
+    <td>{{ticket.3}}</td>    
+  </tr>  
+</table> <br> 
+ <table border = 1, style="width:100%">
+  <tr>
+    <th>Passenger ID</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Gender</th>
+  </tr>
+  <tr>
+    <td>{{passenger.0}}</td>
+    <td>{{passenger.1}}</td>
+    <td>{{passenger.2}}</td>
+    <td>{{passenger.3}}</td>
+  </tr>  
+</table> <br>
+<table border = 1, style="width:100%">
+  <tr>
+    <th>Phone Number</th>
+    <th>Age</th>
+    <th>Seat Class</th>
+  </tr>
+  <tr>
+    <td>{{passenger.4}}</td>
+    <td>{{passenger.6}}</td>
+    <td>{{passenger.7}}</td>
+  </tr>  
+</table> <br>
+<br><br>
+{% endif %}
+</body>
+</html>

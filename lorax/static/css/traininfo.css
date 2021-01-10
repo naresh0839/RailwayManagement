@@ -1,0 +1,61 @@
+input[type=submit] 
+{
+    background-color: blue; /* Green */
+    border-radius: initial;
+    color: white;
+    padding: 7px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+}
+
+body {
+    background-color: grey;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+
+button {
+    background-color: green; /* Green */
+    border: none;
+    color: white;
+    padding: 7px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+}
+
+b {
+    color: red;
+}
+
+h1 {
+    text-align: center;
+    color: black;
+    font-size: 2vw;
+}
+h2 {
+    text-align: center;
+    color: white;
+    font-size: 3vw;
+}
+h3 {
+    font-size: 2vw;
+}
+th {
+    background-color: black;
+    color: white;
+}
+
+td {
+    background-color: transparent;
+    color: white;
+}
+s
+th, td {
+    padding: 5px;
+    text-align: left;
+}

@@ -1,0 +1,114 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lorax | Train Info</title>
+  <link rel="stylesheet" href="{% static 'css/traininfo.css' %}" /> 
+	<link rel="stylesheet" href="{% static 'css/form_login.css' %}" type="text/css" media="all" />
+</head>
+<body>  
+  <center>    
+    <section class="w3l-forms-23">
+		<div class="forms23-block-hny">
+			<div class="wrapper">
+				<a class="logo" href="#">
+					  <img src="{% static 'images/logo.png' %}" alt="Your logo" title="Your logo" style="height:100px;" />
+				</a> 
+				<br>
+				<div class="d-grid forms23-grids">
+					<div class="form23">
+						<div class="bottom-content">
+							<h3> Train Info </h3>
+							<br>
+							<form action="#" method="POST"> {% csrf_token %}
+								<input type="number" name="trainno" min="10000" max="99999" class="input-form" placeholder="Train Number"
+										required="required" />
+								<button type="submit" class="loginhny-btn btn">Submit</button>
+							</form>
+              <p>Go back!! <a href="/dashboard/">Dashboard</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+  </center>
+  {% if show %}
+  <br>
+  <h2>Train</h2>
+  <br>
+  <h1>{{info.0}} - {{info.1}}</h1>
+  <br>
+ <table border = 1, style="width:100%">
+  <tr>
+    <th>Number</th>
+    <th>Train Name</th>
+    <th>Sleeper Seats</th>
+    <th>First AC Seats</th>
+    <th>Second AC Seats</th>
+    <th>Third AC Seats</th>
+    <th>Wifi</th>
+    <th>Food</th>
+  </tr>
+  <tr>
+    <td>{{info.0}}</td>
+    <td>{{info.1}}</td>
+    <td>{{info.2}}</td>
+    <td>{{info.3}}</td>
+    <td>{{info.4}}</td>
+    <td>{{info.5}}</td>
+    <td>{{info.6}}</td>
+    <td>{{info.7}}</td>    
+  </tr>  
+</table> <br> 
+ <table border = 1, style="width:100%">
+  <tr>
+    <th>Sunday</th>
+    <th>Monday</th>
+    <th>Tuesday</th>
+    <th>Wednesday</th>
+    <th>Thursday</th>
+    <th>Friday</th>
+    <th>Saturday</th>
+  </tr>
+  <tr>
+    <td>{{info.8}}</td>
+    <td>{{info.9}}</td>
+    <td>{{info.10}}</td>
+    <td>{{info.11}}</td>
+    <td>{{info.12}}</td>
+    <td>{{info.13}}</td>
+    <td>{{info.14}}</td>  
+  </tr>  
+</table> <br>
+
+<table border = 1, style="width:100%">  
+  <tr>
+    <th>Station Code</th>
+    <th>Arrival Time</th>
+    <th>Departure Time</th>
+  </tr>
+  {% for row in stop %}
+    <tr>
+      <td>{{row.1}}</td>
+      <td>{{row.2}}</td>
+      <td>{{row.3}}</td>
+    </tr>  
+  {% endfor %}
+</table> <br>
+<table border = 1, style="width:100%">
+  <tr>
+    <th>Station Code</th>
+    <th>Station Name</th>
+  </tr>
+  {% for key, value in station.items %}
+    <tr>
+      <td>{{key}}</td>
+      <td>{{value}}</td>
+    </tr>  
+  {% endfor %}
+</table> <br>
+{% endif %}
+</body>
+</html>

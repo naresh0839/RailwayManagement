@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+	<title>Lorax | Login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="keywords"
+		content="An easy way to book railway tickets." />
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<link rel="stylesheet" href="{% static 'css/form_login.css' %}" type="text/css" media="all" />
+</head>
+
+<body>
+	<section class="w3l-forms-23">
+		<div class="forms23-block-hny">
+			<div class="wrapper">
+				<a class="logo" href="#">
+					  <img src="{% static 'images/logo.png' %}" alt="Your logo" title="Your logo" style="height:100px;" />
+				</a> 
+				<br><br>
+				<div class="d-grid forms23-grids">
+					<div class="form23">
+						<div class="main-bg">
+							<div class="speci-login first-look">
+								<img src="{% static 'images/user.png' %}" alt="" class="img-responsive">
+							</div>
+						</div>
+						<br>
+						<div class="bottom-content">
+							<h2> Login </h2>
+							<br>
+							<form action="#" method="POST"> {% csrf_token %}
+								<input type="username" name="username" class="input-form" placeholder="Your Username"
+										required="required" />
+								<input type="password" name="password" class="input-form"
+										placeholder="Your Password" required="required" />
+								<button type="submit" class="loginhny-btn btn">Login</button>
+							</form>
+							<p>Not a member yet? <a href="/signup/">Join Now!</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="w3l-copy-right text-center">
+					<p>© 2020 Lorax Login Form. All rights reserved</p>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+</html>
