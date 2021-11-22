@@ -290,7 +290,7 @@ def signup(request):
 				break
 
 		if invalids and invalidf:
-			return HttpResponse("atleast one contact must be valid")
+			return HttpResponse(render(request,"signup_fail.html"))
 
 		try:
 			userCreation = User.objects.create_user(username, None, password)
@@ -303,6 +303,7 @@ def signup(request):
 			return HttpResponse(render(request, "signup_success.html"))
 		except Exception as e:
 			print(e)
+			return HttpResponse(render(request,"signup_fail.html"))
 		finally:
 			connection.close()
 	else:
