@@ -4,10 +4,15 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.db import connection
+from django.contrib.auth.hashers import make_password,check_password
+
 import MySQLdb
 
 def home(request):
-    return HttpResponse(render(request, "home.html"))
+	if request.user.is_authenticated:
+		return HttpResponse(render(request,"login_success.html"))
+	else:
+		return HttpResponse(render(request, "home.html"))
 
 def aboutus(request):
 	return HttpResponse(render(request, "aboutus.html"))
@@ -54,13 +59,14 @@ def traininfo(request):
 		for row in stoppage:
 			station[str(row[1])] = scode[str(row[1])]
 
-		context = {"info":train, "stop":stoppage, "station":station, "show":True}
+		context = {"info":train, "stop":stoppage, "station":station, "show":True,"invalid":False}
 		if train == None:
-			return HttpResponse("invalid train number")
+			context = {"show":False, "invalid":True}
+			return HttpResponse(render(request, "traininfo.html", context))
 		else:
 			return HttpResponse(render(request, "traininfo.html", context))
 	else:
-		return HttpResponse(render(request, "traininfo.html", {"show":False,}))
+		return HttpResponse(render(request, "traininfo.html", {"show":False,"invalid":False}))
 
 @login_required
 def findtrains(request):
@@ -87,16 +93,16 @@ def findtrains(request):
 			         where a.Station_Code = "%s" and b.Station_Code = "%s" ''' %(fstation, sstation))
 		
 		trains = c.fetchall()
-
 		if len(trains) == 0:
-			return HttpResponse("invalid station code")
+			context = {"show":False, "invalid":True}
+			return HttpResponse(render(request, "findtrains.html", context))	
 
-		context = {"trains":trains, "show":True}
+		context = {"trains":trains, "show":True, "invalid":False}
 
 		return HttpResponse(render(request, "findtrains.html", context))
 		
 	else:
-		return HttpResponse(render(request, "findtrains.html", {"show":False}))	
+		return HttpResponse(render(request, "findtrains.html", {"show":False,"invalid":False}))	
 
 @login_required
 def ticket(request):
@@ -222,6 +228,8 @@ def ticket(request):
 		return HttpResponse(render(request, "ticket.html", {"show":False}))	
 
 def signup(request):
+	if request.user.is_authenticated:
+		return HttpResponse(render(request,"login_success.html"))
 	if request.method == "POST":
 		username = request.POST.get('username')
 		password = request.POST.get('password')
@@ -290,11 +298,13 @@ def signup(request):
 				break
 
 		if invalids and invalidf:
+			print("*")
 			return HttpResponse(render(request,"signup_fail.html"))
 
 		try:
 			userCreation = User.objects.create_user(username, None, password)
 			c = connection.cursor()
+			#encodedPass = make_password(password)
 			c.execute('INSERT INTO Account VALUES("%s", "%s", "%s", "%s")' % (username, password, email, address))
 			if not invalidf:
 				c.execute('INSERT INTO Contact VALUES("%s", "%s")' % (username, fnumber))
@@ -313,7 +323,7 @@ def login_user(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-
+        #print(check_password(password,))
         user = authenticate(username=username, password=password)
 
         if user:
@@ -323,7 +333,20 @@ def login_user(request):
         else:
             return HttpResponse(render(request, "login_fail.html"))
 
+    if request.user.is_authenticated:
+    	return HttpResponse(render(request,"login_success.html"))
     return HttpResponse(render(request, "form_login.html"))
+
+def list_trains(request):
+	c=connection.cursor()
+	tif=[]
+	c.execute('SELECT * FROM Train')
+	for row in c.fetchall():
+		s = str(row[0]) + " " + row[1]
+		tif.insert(0,s)
+
+	context = {'traininfo':tif}
+	return HttpResponse(render(request,"list_trains.html",context))
 
 @login_required
 def logout_user(request):
