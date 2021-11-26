@@ -9,6 +9,11 @@
 </head>
 <body>  
   <center>    
+  	{% if invalid %}
+  		<h1>Please enter Correct Train Number. Check out Train Numbers <a href="\listtrains\">here</a></h1>
+  	{% elif show%}
+  		<h1> Scroll Below to see the Train Details</h1> 
+  	{% endif %}
     <section class="w3l-forms-23">
 		<div class="forms23-block-hny">
 			<div class="wrapper">

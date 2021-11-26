@@ -37,6 +37,9 @@
 	</section>
   </center>   
   <center>
+  	{% if invalid %}
+  		Please enter Correct Train Number. Check out Train Numbers <a href="\listtrains\">here</a>
+  	{% endif %}
   	{% if show %}
 	  <br>
 	<h2>Trains Available</h2>
