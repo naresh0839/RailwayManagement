@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Lorax | Home</title>
+	<title>Lorax | Train List</title>
 	<link rel="stylesheet" href="{% static 'css/home.css' %}" /> 
 </head>
 <body>
@@ -13,20 +13,27 @@
                 <img src="{% static "images/logo.png" %}" alt="Lorax">
             </div>
             <ul>
-    			<li class="active"><a href="/home/">Home</a></li>
-    			<li><a href="/listtrains/">Train List</a></li>
+    			<li><a href="/home/">Home</a></li>
+    			<li class="active"><a href="/listtrains/">Train List</a></li>
     			<li><a href="/login/">Login</a></li>
     			<li><a href="/signup/">Sign Up</a></li>
     			<li><a href="/aboutus/">About Us</a></li>
     		</ul>
     	</div>
         <div class="title">
-            <h1>RAILWAY MANAGEMENT SYSTEM</h1>
+        <h1> Train List </h1>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+            {% for i in traininfo %}
+		<h1> {{i}} </h1> 
+	    {% endfor %}
         </div>
-		<div id = "login" class="button">
-			<a href="/login/" class="btn">LOGIN</a>
-			<a href="/signup/" class="btn">SIGN UP</a>
-		</div>
+		
+	</div>
 	</header>
+
 </body>
 </html>

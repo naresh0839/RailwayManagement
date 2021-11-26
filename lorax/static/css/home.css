@@ -64,6 +64,13 @@ ul li.active a{
     font-style: bold;
 }
 
+
+.title h2{
+    color: #fff;
+    font-size: 20px;
+    font-style: bold;
+}
+
 .button{
     position: absolute;
     top: 62%;
@@ -82,4 +89,18 @@ ul li.active a{
 .btn:hover{
     background-color: #fff;
     color: #000;
+}
+.trainname{
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    margin: auto;
+
 }
