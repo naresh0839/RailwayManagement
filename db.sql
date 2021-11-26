@@ -7,13 +7,10 @@ USE railway_management;
 DROP TABLE IF EXISTS `Account`;
 CREATE TABLE `Account` (
   `Username` varchar(15) NOT NULL,
-  `Password` varchar(100) NOT NULL,
   `Email_Id` varchar(35) NOT NULL,
   `Address` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`Username`)
 );
-
-INSERT INTO `Account` VALUES ('shaan','buddha','shaan123rock@gmail.com','Bokaro'),('zuhair','qwerty','mdzuhair66@gmail.com','Kolkata'),('naresh','asdfgh','naresh0839@gmail.com','Sirsa Haryana'),('sayan','famislove','gsayan@gmail.com','Jabalpur');
 
 -- Table structure for table `Contact`
 
@@ -24,8 +21,6 @@ CREATE TABLE `Contact` (
   PRIMARY KEY (`Username`,`Phone_No`),
   CONSTRAINT `Contact_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `Account` (`Username`) ON DELETE CASCADE
 ); 
-
-INSERT INTO `Contact` VALUES ('shaan','1234567899'),('naresh','7289809959'),('zuhair','1234567899'),('sayan','1234567899'); 
 
 -- Table structure for table `Station`
 

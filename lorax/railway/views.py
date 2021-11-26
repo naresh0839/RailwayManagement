@@ -305,7 +305,7 @@ def signup(request):
 			userCreation = User.objects.create_user(username, None, password)
 			c = connection.cursor()
 			#encodedPass = make_password(password)
-			c.execute('INSERT INTO Account VALUES("%s", "%s", "%s", "%s")' % (username, password, email, address))
+			c.execute('INSERT INTO Account VALUES("%s", "%s", "%s")' % (username, email, address))
 			if not invalidf:
 				c.execute('INSERT INTO Contact VALUES("%s", "%s")' % (username, fnumber))
 			if not invalids:
@@ -342,7 +342,7 @@ def list_trains(request):
 	tif=[]
 	c.execute('SELECT * FROM Train')
 	for row in c.fetchall():
-		s = str(row[0]) + " " + row[1]
+		s = str(row[0]) + " : " + row[1]
 		tif.insert(0,s)
 
 	context = {'traininfo':tif}
