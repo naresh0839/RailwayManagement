@@ -24,6 +24,9 @@
 			<a href="/traininfo/" class="btn">Train Info</a>
 			<a href="/findtrains/" class="btn">Train b/w two stations</a>
 			<a href="/ticket/" class="btn">Book a ticket</a>
+			{% if request.user.is_superuser %}
+				<a href="/addtrain/" class="btn">Add a train</a>
+			{% endif %}
             <a href="/download_ticket/" class="btn">Download Ticket</a>
 		</div>
 	</header>
