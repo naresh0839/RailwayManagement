@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+	<title>Lorax | Add Trains</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="keywords"
+		content="An easy way to book railway tickets." />
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<link rel="stylesheet" href="{% static 'css/form_login.css' %}" type="text/css" media="all" />
+</head>
+
+<body>
+	<section class="w3l-forms-23">
+		<div class="forms23-block-hny">
+			<div class="wrapper">
+				<a class="logo" href="#">
+					  <img src="{% static 'images/logo.png' %}" alt="Your logo" title="Your logo" style="height:100px;" />
+				</a> 
+				<br><br>
+				<div class="d-grid forms23-grids">
+					<div class="form23">
+						<div class="main-bg">
+							<div class="speci-login first-look">
+								<img src="{% static 'images/user.png' %}" alt="" class="img-responsive">
+							</div>
+						</div>
+						<br>
+						<div class="bottom-content">
+							<h2> Add a train </h2>
+							<br>
+							<form action="#" method="POST"> {% csrf_token %}
+								<input type="text" name="trainno" class="input-form" placeholder="Train No."
+										required="required" />
+								<input type="text" name="trainname" class="input-form" placeholder="Train Name"
+										required="required" />
+								<input type="text" name="seatsleeper" class="input-form" placeholder="Number of Sleeper Seats"
+										required="required" />
+								<input type="text" name="seatfirst" class="input-form" placeholder="Number of 1A seats"
+										required="required" />
+								<input type="text" name="seatsecond" class="input-form" placeholder="Number of 2A seats"
+										required="required" />
+								<input type="text" name="seatthird" class="input-form"
+										placeholder="Number of 3A seats" required="required" />
+								
+								<button type="submit" class="loginhny-btn btn">Add Train</button>
+							</form>
+							<p>Return to<a href="/signup/"> dashboard</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="w3l-copy-right text-center">
+					<p>© 2020 Lorax Login Form. All rights reserved</p>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+</html>
