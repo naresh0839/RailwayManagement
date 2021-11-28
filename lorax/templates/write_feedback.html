@@ -3,17 +3,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lorax | Train between Two Stations</title>
+  <title>Lorax | Feedback</title>
   <link rel="stylesheet" href="{% static 'css/findtrains.css' %}" /> 
 	<link rel="stylesheet" href="{% static 'css/form_login.css' %}" type="text/css" media="all" />
 </head>
 <body>  
-{% if invalid %}
-  		Please enter Correct Train Number. Check out Station Number <a href="\liststations\">here</a>
-  	{% endif %}
-{% if notfound %}
-  		NO train routes in this path are there as of now! Hang in there, we will make it happen!
-  	{% endif %}
+	{% if done %}
+	    <h3> You feedback is sent to the admin for review. Thanks </h3>
+	    {% endif %}
 	<center> 
 	   
     <section class="w3l-forms-23">
@@ -26,17 +23,16 @@
 				<div class="d-grid forms23-grids">
 					<div class="form23">
 						<div class="bottom-content">
-							<h3> Train Info </h3>
+							<h3> Feedback Form </h3>
 							<br>
 							<form action="#" method="POST"> {% csrf_token %}
-								<input type="text" name="fstation" class="input-form" placeholder="STATION CODE 1"
+								<input type="text" name="fhead" class="input-form" placeholder="Feedback Heading"
 										required="required" />
-								<input type="text" name="sstation" class="input-form" placeholder="STATION CODE 2"
+								<input type="text" name="ftext" class="input-form" placeholder="Feedback Text"
 										required="required" />
 								<button type="submit" class="loginhny-btn btn">Submit</button>
 							</form>
               				<p>Go back <a href="/dashboard/">Dashboard</a></p>
-              				<p> Check station codes <a href="/liststations/"> here </a></p>
 						</div>
 					</div>
 				</div>
@@ -45,18 +41,6 @@
 	</section>
   </center>   
   <center>
-  	
-  	{% if show %}
-	  <br>
-	<h2>Trains Available</h2>
-	<br>
-	{% for trainno in trains %}
-	<i>{{trainno.0}}</i><br>
-	{% endfor %}<br>
-	<h4>To know more about these trains.</h4><br>
-	<a href="/traininfo/"> <button>Click here!</button></a>
-	<br><br>
-	{% endif %}
   </center>
 </body>
 </html>

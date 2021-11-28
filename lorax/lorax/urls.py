@@ -33,5 +33,8 @@ urlpatterns = [
     url(r'^download_ticket/', views.download_ticket),
     url(r'^aboutus/', views.aboutus),
     url(r'^listtrains/',views.list_trains),
-    url(r'^addtrain/',views.add_train)
+    url(r'^addtrain/',views.add_train),
+    url(r'^liststations/',views.list_stations),
+    url(r'^writefeedback/',views.write_feedback),
+    url(r'^listfeedback/',views.show_feedback)
 ]

@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="{% static 'css/form_login.css' %}" type="text/css" media="all" />
 </head>
 <body>  
+	{% if owner %}
+	You are not the owner of this ticket or the ticket does not exist
+	{% endif %}
   <center>    
     <section class="w3l-forms-23">
 		<div class="forms23-block-hny">
