@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.db import connection
 from django.contrib.auth.hashers import make_password,check_password
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
 
 import MySQLdb
 
@@ -125,6 +127,28 @@ def findtrains(request):
 		
 	else:
 		return HttpResponse(render(request, "findtrains.html", {"show":False,"invalid":False,"notfound":False}))	
+
+@login_required
+def train_search_on_date(request):
+	if request.method == "POST":
+		start_station = request.POST.get('sstation')
+		end_station = request.POST.get('estation')
+		date_of_journey = request.POST.get('DOJ')
+
+		c = connection.cursor()
+		# c.execute() write query to find trains going from start_station to end_station
+
+		train = c.fetchall()
+		if len(train) == 0:
+			return HttpResponse(render(request, "ticket.html", {"error":"EMPTYTRAINS"}))
+
+		seats_availability = []
+		
+		for tnum in train:
+			c.execute('''SELECT * FROM Seats WHERE Train_No = "%s" and Date = "%s"''' %(tnum, date_of_journey))
+			seats_availability.add(c[0])
+
+		return HttpResponse(render((request), "tickets_seats_availability.html", {"doj":date_of_journey, "seats_avail":seats_availability}))	
 
 @login_required
 def ticket(request):
@@ -261,109 +285,63 @@ def signup(request):
 		username = request.POST.get('username')
 		password = request.POST.get('password')
 		email = request.POST.get('email')
-		address = request.POST.get('address')
-		fnumber = request.POST.get('fnumber')
-		snumber = request.POST.get('snumber')
-
-		alpha = []
-		alp = 'a'
-		for i in range(0, 26):
-			alpha.append(alp)
-			alp = chr(ord(alp) + 1)
-
-		num = []
-		zer = '0'
-		for i in range(0, 10):
-			num.append(zer)
-			zer = chr(ord(zer) + 1)
-
-		invalid = False
-
-		if len(username) == 0:
-			invalid = True
-
-		for c in username:
-			if ((c not in alpha) and (c not in num)):
-				invalid = True
-				break
-
-		if invalid:
-			return HttpResponse("invalid username, characters allowed [a-z] and [0-9]")
-
-		invalid = False
-
-		if len(password) == 0:
-			invalid = True
-
-		for c in password:
-			if c == " ":
-				invalid = True
-				break
-
-		if invalid:
-			return HttpResponse("space not allowed in the password")
-
-		if len(address) == address.count(' '):
-			return HttpResponse("invalid address")
-
-		invalidf, invalids = False, False
-
-		if len(fnumber) != 10:
-			invalidf = True
-
-		for c in fnumber:
-			if c not in num:
-				invalidf = True
-				break
-
-		if len(snumber) != 10:
-			invalids = True
-
-		for c in snumber:
-			if c not in num:
-				invalids = True
-				break
-
-		if invalids and invalidf:
-			print("*")
-			return HttpResponse(render(request,"signup_fail.html"))
-
+		phone_number = request.POST.get('phone_number')
+		c = connection.cursor()
+		c.execute('SELECT * FROM account WHERE username = "%s" ' %(username))
+		users = c.fetchall()
+		if len(users) != 0:
+			return HttpResponse(render(request, "form_signup.html", {"message":"USEREXISTS"}))
 		try:
 			userCreation = User.objects.create_user(username, None, password)
-			c = connection.cursor()
-			#encodedPass = make_password(password)
-			c.execute('INSERT INTO Account VALUES("%s", "%s", "%s")' % (username, email, address))
-			if not invalidf:
-				c.execute('INSERT INTO Contact VALUES("%s", "%s")' % (username, fnumber))
-			if not invalids:
-				c.execute('INSERT INTO Contact VALUES("%s", "%s")' % (username, snumber))
-			return HttpResponse(render(request, "signup_success.html"))
+			activation_code = get_random_string(30)
+			print(activation_code)
+			c.execute('INSERT INTO Account(Username, Email_Id, phone_number, activation_code) VALUES("%s", "%s", "%s", "%s")' % (username, email, phone_number, activation_code))
+			# now we need to send a email activation link
+			message_body = "Hello " + username + ", Please find the activation link : "
+			message_body += "http://127.0.0.1:8000/activation/?code=" + activation_code
+			send_mail("Welcome to RailHelp", message_body, 'naresh0839@gmail.com', [email])
+			return HttpResponse(render(request, "form_signup.html", {"message":"SUCCESS"}))
 		except Exception as e:
-			print(e)
-			return HttpResponse(render(request,"signup_fail.html"))
+			return HttpResponse(render(request,"form_signup.html", {"message":"FAILURE"}))
 		finally:
 			connection.close()
 	else:
 		return HttpResponse(render(request, "form_signup.html"))
 
+def activation(request):
+	if request.method == "GET":
+		code = request.GET['code']
+		c = connection.cursor()
+		try:
+			c.execute('UPDATE account SET enabled = "%s" WHERE activation_code = "%s"' % ('Y', code))
+			return HttpResponseRedirect("/login/")
+		except Exception as e:
+			return HttpResponseRedirect("/home/")
+		finally:
+			connection.close()
+	else:
+		return HttpResponse(render(request, "form_login.html", {"message":"POSTMETHOD"}))
+
 def login_user(request):
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        #print(check_password(password,))
-        user = authenticate(username=username, password=password)
-
-        if user:
-            login(request, user)
-            return HttpResponse(render(request, "login_success.html"))
-
-        else:
-            return HttpResponse(render(request, "login_fail.html"))
-
-    if request.user.is_authenticated:
-    	return HttpResponse(render(request,"login_success.html"))
-    return HttpResponse(render(request, "form_login.html"))
-
+	if request.user.is_authenticated:
+		return HttpResponse(render(request, "login_success.html"))
+	if request.method == "POST":
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		c = connection.cursor()
+		c.execute('SELECT * FROM account WHERE username="%s"' % (username))
+		f = c.fetchone()
+		if f[5] == 'Y':
+			user = authenticate(username=username, password=password)
+			if user:
+				login(request, user)
+				return HttpResponse(render(request, "login_success.html"))
+			else:
+				return HttpResponse(render(request, "form_login.html", {"message":"FAILED"}))
+		else:
+			return HttpResponse(render(request, "form_login.html", {"message":"NOPERMISSION"}))
+	return HttpResponse(render(request, "form_login.html", {"message":"NULL"}))
+	
 def list_trains(request):
 	c=connection.cursor()
 	tif=[]
@@ -382,7 +360,6 @@ def list_stations(request):
 	for row in c.fetchall():
 		s = str(row[0]) + " : " + row[1]
 		tif.insert(0,s)
-
 	context = {'stationinfo':tif}
 	return HttpResponse(render(request,"list_stations.html",context))
 
@@ -409,8 +386,6 @@ def add_train(request):
 		return HttpResponse(render(request,"add_trains.html"))
 	else:
 		return HttpResponse(render(request,"login_success.html"))
-
-
 
 @login_required
 def logout_user(request):

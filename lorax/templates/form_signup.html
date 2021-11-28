@@ -25,22 +25,16 @@
 					<h3>Sign up</h3>
 					<form method="POST" class="signin-form"> {% csrf_token %}
 						<div class="form-input">
-							<input type="text" name="username" placeholder="Username" required="" autofocus>
+							<input type="text" name="username" placeholder="Username" required="True" autofocus>
 						</div>
 						<div class="form-input">
-							<input type="email" name="email" placeholder="Email" required="" autofocus>
+							<input type="email" name="email" placeholder="Email" required="True" autofocus>
 						</div>
 						<div class="form-input">
-							<input type="password" name="password" placeholder="Password" required="">
+							<input type="password" name="password" placeholder="Password" required="True">
 						</div>
                         <div class="form-input">
-							<input type="text" name="address" placeholder="Address" required="" autofocus>
-						</div>
-                        <div class="form-input">
-							<input type="text" name="fnumber" placeholder="Contact" required="" autofocus>
-						</div>
-                        <div class="form-input">
-							<input type="text" name="snumber" placeholder="Alternate Contact" required="" autofocus>
+							<input type="text" name="phone_number" placeholder="Contact" required="True" autofocus>
 						</div>
 						<button type="submit" class="btn btn-primary theme-button mt-4">Sign Up</button>
 					</form><p class="signup">Already a customer? <a href="/login/" class="signuplink">Login now!</a></p>
@@ -49,5 +43,4 @@
 		</div>
 	</section>
 </body>
-
 </html>

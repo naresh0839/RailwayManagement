@@ -36,5 +36,6 @@ urlpatterns = [
     url(r'^addtrain/',views.add_train),
     url(r'^liststations/',views.list_stations),
     url(r'^writefeedback/',views.write_feedback),
-    url(r'^listfeedback/',views.show_feedback)
+    url(r'^listfeedback/',views.show_feedback),
+    url(r'^activation/',views.activation)
 ]
