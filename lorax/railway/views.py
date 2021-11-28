@@ -349,6 +349,30 @@ def list_trains(request):
 	return HttpResponse(render(request,"list_trains.html",context))
 
 @login_required
+def add_train(request):
+	if request.user.is_superuser:
+		if request.method=="POST":
+			trainno=request.POST.get("trainno")
+			trainname = request.POST.get("trainname")
+			seatsleeper = request.POST.get("seatsleeper")
+			seatfirst = request.POST.get("seatfirst")
+			seatsecond = request.POST.get("seatsecond")
+			seatthird = request.POST.get("seatthird")
+			c = connection.cursor()
+			count = 0
+			c.execute("SELECT * FROM Train where Train_No='%s' " %(trainno))
+			for row in c.fetchall():
+				count=count+1
+			if count == 0:
+				c.execute('''INSERT INTO Train(Train_No,Name,Seat_Sleeper,Seat_First_Class_AC,Seat_Second_Class_AC,Seat_Third_Class_AC) VALUES ("%s","%s","%s","%s","%s","%s")''' %(trainno,trainname,seatsleeper,seatfirst,seatsecond,seatthird) )
+				return HttpResponse(render(request,"login_success.html"))
+			else :
+				return HttpResponse(render(request,"login_success.html"))
+		return HttpResponse(render(request,"add_trains.html"))
+	else:
+		return HttpResponse(render(request,"login_success.html"))
+
+@login_required
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect("/home/")
