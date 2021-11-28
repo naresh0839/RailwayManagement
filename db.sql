@@ -5,10 +5,13 @@ USE railway_management;
 -- Table structure for table `Account`
 
 DROP TABLE IF EXISTS `Account`;
-CREATE TABLE `Account` (
+CREATE TABLE `account` (
   `Username` varchar(15) NOT NULL,
   `Email_Id` varchar(35) NOT NULL,
   `Address` varchar(50) DEFAULT NULL,
+  `phone_number` char(10) NOT NULL DEFAULT '',
+  `activation_code` char(255) NOT NULL,
+  `enabled` char(1) NOT NULL DEFAULT 'N',
   PRIMARY KEY (`Username`)
 );
 
