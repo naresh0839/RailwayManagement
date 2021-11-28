@@ -4,7 +4,7 @@ USE railway_management;
 
 -- Table structure for table `Account`
 
-DROP TABLE IF EXISTS `Account`;
+DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `Username` varchar(15) NOT NULL,
   `Email_Id` varchar(35) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE `Feedback` (
   `Username` varchar (15) NOT NULL,
   PRIMARY KEY (`Feedback_id`),
   KEY(`Username`),
-  CONSTRAINT `Feeback_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `Account` (`Username`) ON DELETE CASCADE
+  CONSTRAINT `Feeback_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `account` (`Username`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Table structure for table `Contact`
@@ -33,7 +33,7 @@ CREATE TABLE `Contact` (
   `Username` varchar(15) NOT NULL DEFAULT '',
   `Phone_No` char(10) NOT NULL DEFAULT '',
   PRIMARY KEY (`Username`,`Phone_No`),
-  CONSTRAINT `Contact_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `Account` (`Username`) ON DELETE CASCADE
+  CONSTRAINT `Contact_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `account` (`Username`) ON DELETE CASCADE
 ); 
 
 -- Table structure for table `Station`
@@ -85,7 +85,7 @@ CREATE TABLE `Ticket` (
   PRIMARY KEY (`Ticket_No`),
   KEY `Username` (`Username`),
   KEY `Train_No` (`Train_No`),
-  CONSTRAINT `Ticket_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `Account` (`Username`) ON DELETE CASCADE,
+  CONSTRAINT `Ticket_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `account` (`Username`) ON DELETE CASCADE,
   CONSTRAINT `Ticket_ibfk_2` FOREIGN KEY (`Train_No`) REFERENCES `Train` (`Train_No`) ON UPDATE CASCADE
 );
 
