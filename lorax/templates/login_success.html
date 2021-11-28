@@ -26,7 +26,9 @@
 			<a href="/ticket/" class="btn">Book a ticket</a>
 			{% if request.user.is_superuser %}
 				<a href="/addtrain/" class="btn">Add a train</a>
+				<a href="/listfeedback/" class="btn">Show Feedbacks</a>
 			{% endif %}
+			<a href="/writefeedback/" class="btn">Write a Feedback</a>
             <a href="/download_ticket/" class="btn">Download Ticket</a>
 		</div>
 	</header>

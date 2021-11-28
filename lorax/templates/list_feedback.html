@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Lorax | Feedback List</title>
+	<link rel="stylesheet" href="{% static 'css/home.css' %}" /> 
+</head>
+<body>
+	<header>
+    	<div class="main">
+    		<div class="logo">
+                <img src="{% static "images/logo.png" %}" alt="Lorax">
+            </div>
+            <ul>
+    			<li><a href="/home/">Home</a></li>
+    			<li class="active"><a href="/listtrains/">Feedback List</a></li>
+    		</ul>
+    	</div>
+        <div class="title">
+        <h1> Feedback List </h1>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+            {% for i in feedback %}
+		<h1> {{i}} </h1>
+	    {% endfor %}
+        </div>
+		
+	</div>
+	</header>
+
+</body>
+</html>

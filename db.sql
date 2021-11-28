@@ -12,6 +12,17 @@ CREATE TABLE `Account` (
   PRIMARY KEY (`Username`)
 );
 
+DROP TABLE IF EXISTS `Feedback`;
+CREATE TABLE `Feedback` (
+  `Feedback_id` int NOT NULL AUTO_INCREMENT,
+  `Feedback_heading` varchar(1000) NOT NULL,
+  `Feedback_text` varchar(1000) NOT NULL,
+  `Username` varchar (15) NOT NULL,
+  PRIMARY KEY (`Feedback_id`),
+  KEY(`Username`),
+  CONSTRAINT `Feeback_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `Account` (`Username`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- Table structure for table `Contact`
 
 DROP TABLE IF EXISTS `Contact`;

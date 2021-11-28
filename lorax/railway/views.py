@@ -26,17 +26,23 @@ def download_ticket(request):
 	if request.method == "POST":
 		ticketno = int(request.POST.get('ticketno'))
 		c = connection.cursor()
-		c.execute('SELECT * FROM Ticket WHERE Ticket_No = %d' %(ticketno))
-		tickets = c.fetchone()
-		c.execute('SELECT * FROM Passenger WHERE Ticket_No = %d' %(ticketno))
-		passenger = c.fetchone()
-		context = {"ticket":tickets, "passenger":passenger, "show":True}
-		if tickets == None:
-			return HttpResponse("Invalid Ticket No!!")
-		else:
+		c.execute('SELECT Username FROM Ticket WHERE Ticket_No = %d' %(ticketno))
+		if c.fetchall() == request.user.username:
+
+			c.execute('SELECT * FROM Ticket WHERE Ticket_No = %d' %(ticketno))
+			tickets = c.fetchone()
+			c.execute('SELECT * FROM Passenger WHERE Ticket_No = %d' %(ticketno))
+			passenger = c.fetchone()
+			context = {"ticket":tickets, "passenger":passenger, "show":True, "owner":False}
+			if tickets == None:
+				return HttpResponse("Invalid Ticket No!!")
+			else:
+				return HttpResponse(render(request, "download_ticket.html", context))
+		else :
+			context = {"owner": True, "show":False}
 			return HttpResponse(render(request, "download_ticket.html", context))
 	else:
-		return HttpResponse(render(request, "download_ticket.html", {"show":False,}))
+		return HttpResponse(render(request, "download_ticket.html", {"show":False,"owner":False}))
 
 @login_required
 def traininfo(request):
@@ -74,6 +80,8 @@ def findtrains(request):
 		fstation = request.POST.get('fstation')
 		sstation = request.POST.get('sstation')
 
+		invalid = True
+
 		if len(fstation) == 0 or len(sstation) == 0:
 			return HttpResponse("station code can't be empty")
 
@@ -89,20 +97,34 @@ def findtrains(request):
 			return HttpResponse("station code must be different")
 
 		c = connection.cursor()
+		c.execute('SELECT * FROM Station WHERE Station_Code = "%s" ' %(fstation))
+
+		if len(c.fetchall())==0:
+			invalid = False
+
+		c.execute('SELECT * FROM Station WHERE Station_Code = "%s" ' %(sstation))
+
+		if len(c.fetchall())==0:
+			invalid = False
+
+		if not invalid:
+			context = {"show":False, "invalid":True,"notfound":False}
+			return HttpResponse(render(request, "findtrains.html", context))
+
 		c.execute('''select a.Train_No from Stoppage as a join Stoppage as b on a.Train_No = b.Train_No 
 			         where a.Station_Code = "%s" and b.Station_Code = "%s" ''' %(fstation, sstation))
 		
 		trains = c.fetchall()
 		if len(trains) == 0:
-			context = {"show":False, "invalid":True}
+			context = {"show":False, "invalid":False, "notfound":True}
 			return HttpResponse(render(request, "findtrains.html", context))	
 
-		context = {"trains":trains, "show":True, "invalid":False}
+		context = {"trains":trains, "show":True, "invalid":False, "notfound":False}
 
 		return HttpResponse(render(request, "findtrains.html", context))
 		
 	else:
-		return HttpResponse(render(request, "findtrains.html", {"show":False,"invalid":False}))	
+		return HttpResponse(render(request, "findtrains.html", {"show":False,"invalid":False,"notfound":False}))	
 
 @login_required
 def ticket(request):
@@ -110,6 +132,7 @@ def ticket(request):
 		tnumber = request.POST.get('tnumber')
 		fname = request.POST.get('fname')
 		lname = request.POST.get('lname')
+		username = request.user.username
 		gender = request.POST.get('gender')
 		age = request.POST.get('age')
 		tclass = request.POST.get('tclass')
@@ -200,9 +223,13 @@ def ticket(request):
 		now = datetime.datetime.now()
 		now = str(now)
 		jdate = (now.split())[0]
+		print(username)
+		c.execute("SELECT * FROM Account WHERE Username='%s'" %(username))
+
+		user1=c.fetchall()
 		
 		c.execute('''INSERT INTO Ticket VALUES("%s", "%s", "%s", "%s")
-					 ''' %(ticketno, tnumber, jdate, request.user))
+					 ''' %(ticketno, tnumber, jdate, username))
 
 		c.execute('''INSERT INTO Passenger(First_name, Last_name, Gender, Phone_No,
 			         Ticket_No, Age, Class) VALUES
@@ -348,6 +375,17 @@ def list_trains(request):
 	context = {'traininfo':tif}
 	return HttpResponse(render(request,"list_trains.html",context))
 
+def list_stations(request):
+	c=connection.cursor()
+	tif=[]
+	c.execute('SELECT * FROM Station')
+	for row in c.fetchall():
+		s = str(row[0]) + " : " + row[1]
+		tif.insert(0,s)
+
+	context = {'stationinfo':tif}
+	return HttpResponse(render(request,"list_stations.html",context))
+
 @login_required
 def add_train(request):
 	if request.user.is_superuser:
@@ -372,7 +410,33 @@ def add_train(request):
 	else:
 		return HttpResponse(render(request,"login_success.html"))
 
+
+
 @login_required
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect("/home/")
+
+@login_required
+def write_feedback(request):
+	if request.method == "POST":
+		feedbackheading = request.POST.get("fhead")
+		feedbacktext = request.POST.get("ftext")
+		username = request.user.username
+		c =connection.cursor()
+		c.execute('INSERT INTO Feedback(Feedback_heading,Feedback_text,Username) VALUES ("%s","%s","%s")' %(feedbackheading,feedbacktext,username))
+		return HttpResponse(render(request,"write_feedback.html",{"done":True}))
+	return HttpResponse(render(request,"write_feedback.html",{"done":False}))
+
+@login_required
+def show_feedback(request):
+	if request.user.is_superuser:
+		c = connection.cursor()
+		c.execute('SELECT * FROM Feedback')
+		feedbacks = c.fetchall()
+		lst = []
+		for i in feedbacks:
+			s = str(i[1])+ " : " + str(i[2]) + " - by " + str(i[3])
+			lst.insert(0,s)
+		return HttpResponse(render(request,"list_feedback.html",{"feedback":lst}))
+	return HttpResponse(render(request,"login_success.html"))
