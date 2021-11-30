@@ -423,3 +423,20 @@ def show_feedback(request):
 			lst.insert(0,s)
 		return HttpResponse(render(request,"list_feedback.html",{"feedback":lst}))
 	return HttpResponse(render(request,"login_success.html"))
+
+def profile_page(request, username=None):
+	if request.user.is_authenticated==False:
+		return HttpResponse(render(request,"home.html"))
+	if username==None:
+		username=request.user
+		c =connection.cursor()
+		c.execute('SELECT * FROM account WHERE Username="%s" ' %(username))
+		user1=c.fetchall()
+		return HttpResponse(render(request,"profile_page.html",{"user":user1,"msg":False}))
+	else:
+		c =connection.cursor()
+		c.execute('SELECT * FROM account WHERE Username="%s" ' %(username))
+		user1=c.fetchall()
+		if len(user1)==0:
+			return HttpResponse(render(request,"profile_page.html",{"msg":True}))
+		return HttpResponse(render(request,"profile_page.html",{"user":user1,"msg":False}))
