@@ -429,14 +429,16 @@ def profile_page(request, username=None):
 		return HttpResponse(render(request,"home.html"))
 	if username==None:
 		username=request.user
-		c =connection.cursor()
-		c.execute('SELECT * FROM account WHERE Username="%s" ' %(username))
-		user1=c.fetchall()
-		return HttpResponse(render(request,"profile_page.html",{"user":user1,"msg":False}))
-	else:
-		c =connection.cursor()
-		c.execute('SELECT * FROM account WHERE Username="%s" ' %(username))
-		user1=c.fetchall()
-		if len(user1)==0:
-			return HttpResponse(render(request,"profile_page.html",{"msg":True}))
-		return HttpResponse(render(request,"profile_page.html",{"user":user1,"msg":False}))
+	c = connection.cursor()
+	c.execute('SELECT * FROM account WHERE Username="%s" ' %(username))
+	
+	# checking whether the given user exists or not
+	flag = c.fetchall()
+	if len(flag) == 0:
+		return HttpResponse(render(request,"profile_page.html",{"msg":True}))
+	
+	c.execute('SELECT * FROM account WHERE Username="%s" ' %(username))
+	account_usr = c.fetchone()
+	c.execute('SELECT * FROM auth_user WHERE Username="%s" ' %(username))
+	auth_user_usr = c.fetchone()
+	return HttpResponse(render(request,"profile_page.html",{"userf":account_usr,"users":auth_user_usr,"msg":False}))
