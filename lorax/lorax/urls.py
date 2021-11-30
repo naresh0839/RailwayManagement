@@ -37,5 +37,7 @@ urlpatterns = [
     url(r'^liststations/',views.list_stations),
     url(r'^writefeedback/',views.write_feedback),
     url(r'^listfeedback/',views.show_feedback),
-    url(r'^activation/',views.activation)
+    url(r'^activation/',views.activation),
+    path('profile/',views.profile_page),
+    path('profile/<str:username>/',views.profile_page)   
 ]
