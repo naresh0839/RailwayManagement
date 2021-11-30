@@ -339,7 +339,7 @@ def login_user(request):
 		c = connection.cursor()
 		c.execute('SELECT * FROM account WHERE Username="%s"' % (username))
 		f = c.fetchone()
-		if f[5] == 'Y':
+		if f[4] == 'Y':
 			user = authenticate(username=username, password=password)
 			if user:
 				login(request, user)
