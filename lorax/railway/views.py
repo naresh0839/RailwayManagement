@@ -298,7 +298,6 @@ def signup(request):
 			return HttpResponse(render(request, "form_signup.html", {"message":"USEREXISTS"}))
 		try:
 			userCreation = User.objects.create_user(username, email, password)
-
 			# if current_user is the first user of the app then making him/her admin
 			c.execute("SELECT COUNT(*) FROM account")
 			num_of_user = c.fetchone()
