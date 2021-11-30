@@ -7,7 +7,6 @@ USE railway_management;
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `Username` varchar(15) NOT NULL,
-  `Email_Id` varchar(35) NOT NULL,
   `Address` varchar(50) DEFAULT NULL,
   `phone_number` char(10) NOT NULL DEFAULT '',
   `activation_code` char(255) NOT NULL,
