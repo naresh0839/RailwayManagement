@@ -342,6 +342,8 @@ def login_user(request):
 		c = connection.cursor()
 		c.execute('SELECT * FROM account WHERE Username="%s"' % (username))
 		f = c.fetchone()
+		if f == None:
+			return HttpResponse(render(request, "form_login.html", {"message":"FAILED"}))
 		if f[4] == 'Y':
 			user = authenticate(username=username, password=password)
 			if user:
