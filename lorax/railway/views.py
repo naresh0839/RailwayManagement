@@ -12,7 +12,7 @@ import MySQLdb
 
 def home(request):
 	if request.user.is_authenticated:
-		return HttpResponse(render(request,"login_success.html"))
+		return HttpResponseRedirect("/dashboard/")
 	else:
 		return HttpResponse(render(request, "home.html"))
 
@@ -21,7 +21,7 @@ def aboutus(request):
 	
 @login_required
 def dashboard(request):
-    return HttpResponse(render(request, "login_success.html"))
+    return HttpResponse(render(request, "dashboard.html"))
 
 @login_required
 def download_ticket(request):
@@ -280,7 +280,7 @@ def ticket(request):
 
 def signup(request):
 	if request.user.is_authenticated:
-		return HttpResponse(render(request,"login_success.html"))
+		return HttpResponseRedirect("/dashboard/")
 	if request.method == "POST":
 		username = request.POST.get('username')
 		password = request.POST.get('password')
@@ -332,7 +332,7 @@ def activation(request):
 
 def login_user(request):
 	if request.user.is_authenticated:
-		return HttpResponse(render(request, "login_success.html"))
+		return HttpResponseRedirect("/dashboard/")
 	if request.method == "POST":
 		username = request.POST.get('username')
 		password = request.POST.get('password')
@@ -343,13 +343,17 @@ def login_user(request):
 			user = authenticate(username=username, password=password)
 			if user:
 				login(request, user)
-				return HttpResponse(render(request, "login_success.html"))
+				return HttpResponseRedirect("/dashboard/")
 			else:
 				return HttpResponse(render(request, "form_login.html", {"message":"FAILED"}))
 		else:
 			return HttpResponse(render(request, "form_login.html", {"message":"NOPERMISSION"}))
 	return HttpResponse(render(request, "form_login.html", {"message":"NULL"}))
-	
+
+@login_required
+def dashboard(request):
+	return HttpResponse(render(request, "dashboard.html"))
+
 def list_trains(request):
 	c=connection.cursor()
 	tif=[]
@@ -388,12 +392,12 @@ def add_train(request):
 				count=count+1
 			if count == 0:
 				c.execute('''INSERT INTO Train(Train_No,Name,Seat_Sleeper,Seat_First_Class_AC,Seat_Second_Class_AC,Seat_Third_Class_AC) VALUES ("%s","%s","%s","%s","%s","%s")''' %(trainno,trainname,seatsleeper,seatfirst,seatsecond,seatthird) )
-				return HttpResponse(render(request,"login_success.html"))
+				return HttpResponseRedirect("/dashboard/")
 			else :
-				return HttpResponse(render(request,"login_success.html"))
+				return HttpResponseRedirect("/dashboard/")
 		return HttpResponse(render(request,"add_trains.html"))
 	else:
-		return HttpResponse(render(request,"login_success.html"))
+		return HttpResponseRedirect("/dashboard/")
 
 @login_required
 def logout_user(request):
@@ -422,7 +426,7 @@ def show_feedback(request):
 			s = str(i[1])+ " : " + str(i[2]) + " - by " + str(i[3])
 			lst.insert(0,s)
 		return HttpResponse(render(request,"list_feedback.html",{"feedback":lst}))
-	return HttpResponse(render(request,"login_success.html"))
+	return HttpResponseRedirect("/dashboard/")
 
 def profile_page(request, username=None):
 	if request.user.is_authenticated==False:
