@@ -6,20 +6,69 @@
 	<title>Lorax | Dashboard</title>
 	<link rel="stylesheet" href="{% static 'css/home.css' %}" />
 	<link rel="stylesheet" href="{% static 'css/login_success.css' %}" />  
+	<link rel="stylesheet" href="{% static 'css/bootstrap-grid.css' %}" />  
+	<link rel="stylesheet" href="{% static 'css/bootstrap-grid.min.css' %}" />  
+	<link rel="stylesheet" href="{% static 'css/bootstrap-reboot.css' %}" />  
+	<link rel="stylesheet" href="{% static 'css/bootstrap-reboot.min.css' %}" />  
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />  
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />  
 </head>
 <body>
 	<header>
-    	<div class="main">
+		<nav class="navbar navbar-expand-lg navbar-light bg-white">
+			<a class="navbar-brand bg-dark" href="#">
+				<img src="{% static "images/logo.png" %}"  height="30" class="d-inline-block align-top" alt="Lorax">
+			  </a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			  <ul class="navbar-nav justify-content-end">
+				<li class="nav-item">
+				  <a class="nav-link" href="/traininfo/">Train Info <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="/findtrains/">Search Train</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="/ticket/">Book Ticket</a>
+				</li>
+				{% if request.user.is_superuser %}
+					<li class="nav-item">
+						<a class="nav-link" href="/addtrain/">Add Train</a>
+				  	</li>
+					  <li class="nav-item">
+						<a class="nav-link" href="/listfeedback/">Show Feedbacks</a>
+				  	</li>
+				{% endif %}
+				<li class="nav-item">
+					<a class="nav-link" href="/writefeedback/">Feedback</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/download_ticket/">Download Ticket</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/profile/">Profile</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/logout/">Logout</a>
+				</li>
+			  </ul>
+			</div>
+		</nav>
+
+    	<!-- <div class="main">
     		<div class="logo">
                 <img src="{% static "images/logo.png" %}" alt="Lorax">
             </div>
             <ul>
     			<li class="active"><a href="/logout/">Logout</a></li>
     		</ul>
-    	</div>
+    	</div> -->
         <div class="title">
             <h1>Hello </b>{{user.username}}!!!!</b></h1><br><br>
         </div>
+		<!--
 		<div id = "login" class="button">
 			<a href="/traininfo/" class="btn">Train Info</a>
 			<a href="/findtrains/" class="btn">Train b/w two stations</a>
@@ -31,8 +80,8 @@
 			{% endif %}
 			<a href="/writefeedback/" class="btn">Write a Feedback</a>
             <a href="/download_ticket/" class="btn">Download Ticket</a>
-			<a href="/profile" class="btn">Profile</a>
 		</div>
+	-->
 	</header>
 </body>
 </html>
