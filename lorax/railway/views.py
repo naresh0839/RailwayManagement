@@ -286,6 +286,7 @@ def signup(request):
 		password = request.POST.get('password')
 		email = request.POST.get('email')
 		phone_number = request.POST.get('phone_number')
+
 		c = connection.cursor()
 		c.execute('SELECT * FROM account WHERE username = "%s" ' %(username))
 		users = c.fetchall()
@@ -293,8 +294,15 @@ def signup(request):
 			return HttpResponse(render(request, "form_signup.html", {"message":"USEREXISTS"}))
 		try:
 			userCreation = User.objects.create_user(username, None, password)
+
+			# if current_user is the first user of the app then making him/her admin
+			c.execute("SELECT COUNT(*) FROM account")
+			num_of_user = c.fetchone()
+			if num_of_user[0] == 0:
+				c.execute('UPDATE auth_user SET is_superuser = 1 WHERE username = "%s"' % (username))
+				c.execute('UPDATE auth_user SET is_staff = 1 WHERE username = "%s"' % (username))
+
 			activation_code = get_random_string(30)
-			print(activation_code)
 			c.execute('INSERT INTO account(Username, Email_Id, phone_number, activation_code) VALUES("%s", "%s", "%s", "%s")' % (username, email, phone_number, activation_code))
 			# now we need to send a email activation link
 			message_body = "Hello " + username + ", Please find the activation link : \n"
