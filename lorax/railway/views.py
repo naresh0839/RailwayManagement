@@ -29,7 +29,11 @@ def download_ticket(request):
 		ticketno = int(request.POST.get('ticketno'))
 		c = connection.cursor()
 		c.execute('SELECT Username FROM Ticket WHERE Ticket_No = %d' %(ticketno))
-		if c.fetchall() == request.user.username:
+		user = c.fetchone()
+		if user == None:
+			context = {"owner": True, "show":False}
+			return HttpResponse(render(request, "download_ticket.html", context))
+		if user[0] == request.user.username:
 
 			c.execute('SELECT * FROM Ticket WHERE Ticket_No = %d' %(ticketno))
 			tickets = c.fetchone()
