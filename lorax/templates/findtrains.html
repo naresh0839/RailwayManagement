@@ -33,6 +33,8 @@
 										required="required" />
 								<input type="text" name="sstation" class="input-form" placeholder="STATION CODE 2"
 										required="required" />
+								<input type="date" name="date_of_journey" class="input-form" placeholder="Date of Journey"
+										required="required" />
 								<button type="submit" class="loginhny-btn btn">Submit</button>
 							</form>
               				<p>Go back <a href="/dashboard/">Dashboard</a></p>
@@ -51,7 +53,7 @@
 	<h2>Trains Available</h2>
 	<br>
 	{% for trainno in trains %}
-	<i>{{trainno.0}}</i><br>
+	<i>{{trainno.0}} SL:{{trainno.1}} 1A:{{trainno.2}} 2A:{{trainno.3}} 3A:{{trainno.4}}</i><br>
 	{% endfor %}<br>
 	<h4>To know more about these trains.</h4><br>
 	<a href="/traininfo/"> <button>Click here!</button></a>

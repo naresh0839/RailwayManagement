@@ -85,6 +85,7 @@ def findtrains(request):
 	if request.method == "POST":
 		fstation = request.POST.get('fstation')
 		sstation = request.POST.get('sstation')
+		doj = request.POST.get('date_of_journey')
 
 		invalid = True
 
@@ -117,18 +118,47 @@ def findtrains(request):
 			context = {"show":False, "invalid":True,"notfound":False}
 			return HttpResponse(render(request, "findtrains.html", context))
 
-		c.execute('''select a.Train_No from Stoppage as a join Stoppage as b on a.Train_No = b.Train_No 
-			         where a.Station_Code = "%s" and b.Station_Code = "%s" ''' %(fstation, sstation))
+		c.execute('''SELECT a.Train_No FROM Stoppage as a join Stoppage as b on a.Train_No = b.Train_No 
+			         WHERE a.Station_Code = "%s" and b.Station_Code = "%s" ''' %(fstation, sstation))
 		
 		trains = c.fetchall()
 		if len(trains) == 0:
 			context = {"show":False, "invalid":False, "notfound":True}
 			return HttpResponse(render(request, "findtrains.html", context))	
-
-		context = {"trains":trains, "show":True, "invalid":False, "notfound":False}
-
-		return HttpResponse(render(request, "findtrains.html", context))
 		
+		# finding valid trains out of the initial list i.e. final_station's arrival time must be more than initial_station's arrival time
+		valid_trains = []
+		for x in trains:
+			c.execute('''SELECT Arrival_Time FROM STOPPAGE WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], fstation))
+			a = c.fetchone()
+			c.execute('''SELECT Arrival_Time FROM STOPPAGE WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], sstation))
+			b = c.fetchone()
+			if b is None or a is None:
+				continue
+			if b[0] > a[0]:
+				valid_trains.append(x[0])
+		
+		# for finding the number of seats available at the given specified date of travel
+		train_seats = []
+		for x in valid_trains:
+			c.execute(''' SELECT * FROM Seats WHERE Train_No = "%s" and Date = "%s" ''' %(x, doj))
+			a = c.fetchone()
+			seat_list_train = []
+			seat_list_train.append(x)
+			if a is None:
+				seat_list_train.append(0)
+				seat_list_train.append(0)
+				seat_list_train.append(0)
+				seat_list_train.append(0)
+			else:
+				seat_list_train.append(a[2])
+				seat_list_train.append(a[3])
+				seat_list_train.append(a[4])
+				seat_list_train.append(a[5])
+			train_seats.append(seat_list_train)
+	
+		context = {"trains":train_seats, "show":True, "invalid":False, "notfound":False}
+		return HttpResponse(render(request, "findtrains.html", context))		
 	else:
 		return HttpResponse(render(request, "findtrains.html", {"show":False,"invalid":False,"notfound":False}))	
 
