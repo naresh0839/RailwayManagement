@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^logout/', views.logout_user),
     url(r'^traininfo/', views.traininfo),
     url(r'^findtrains/', views.findtrains),
-    url(r'^ticket/', views.ticket),
+    # url(r'^ticket/', views.ticket),
     url(r'^dashboard/', views.dashboard),
     url(r'^download_ticket/', views.download_ticket),
     url(r'^aboutus/', views.aboutus),
@@ -43,7 +43,10 @@ urlpatterns = [
 
     # Profile Page Implementation
     path('profile/',views.profile_page),
-    path('profile/<str:username>/',views.profile_page),   
+
+    # Book Ticket Implementation
+    path('ticket/',views.ticket),
+    path('ticket/<str:train_no>/',views.ticket),
 
     # Forgot Password Implementation
     path('reset_password/', 

@@ -229,9 +229,10 @@ def findtrains(request):
 		return HttpResponse(render(request, "findtrains.html", {"show":False,"invalid":False,"notfound":False}))	
 
 @login_required
-def ticket(request):
+def ticket(request, train_no=None):
+	if train_no==None:
+		return HttpResponseRedirect("/dashboard/")
 	if request.method == "POST":
-		tnumber = request.POST.get('tnumber')
 		fname = request.POST.get('fname')
 		lname = request.POST.get('lname')
 		username = request.user.username
@@ -241,7 +242,7 @@ def ticket(request):
 		number = request.POST.get('number')
 
 		c = connection.cursor()
-		c.execute("SELECT * FROM Train where Train_No = '%s' " %(tnumber))
+		c.execute("SELECT * FROM Train where Train_No = '%s' " %(train_no))
 
 		train = c.fetchall()
 
@@ -331,7 +332,7 @@ def ticket(request):
 		user1=c.fetchall()
 		
 		c.execute('''INSERT INTO Ticket VALUES("%s", "%s", "%s", "%s")
-					 ''' %(ticketno, tnumber, jdate, username))
+					 ''' %(ticketno, train_no, jdate, username))
 
 		c.execute('''INSERT INTO Passenger(First_name, Last_name, Gender, Phone_No,
 			         Ticket_No, Age, Class) VALUES
@@ -340,16 +341,16 @@ def ticket(request):
         
 		if str(tclass) == "sleeper":
 			c.execute('''UPDATE Train set Seat_Sleeper = "%s" WHERE Train_No = "%s"
-				         ''' %(int(train[2])-1, tnumber))
+				         ''' %(int(train[2])-1, train_no))
 		if str(tclass) == "first class ac":
 			c.execute('''UPDATE Train set Seat_First_Class_AC = "%s" WHERE Train_No = "%s"
-				         ''' %(int(train[3])-1, tnumber))
+				         ''' %(int(train[3])-1, train_no))
 		if str(tclass) == "second class ac":
 			c.execute('''UPDATE Train set Seat_Second_Class_AC = "%s" WHERE Train_No = "%s"
-				         ''' %(int(train[4])-1, tnumber))
+				         ''' %(int(train[4])-1, train_no))
 		if str(tclass) == "third class ac":
 			c.execute('''UPDATE Train set Seat_Third_Class_AC = "%s" WHERE Train_No = "%s"
-				         ''' %(int(train[5])-1, tnumber))			
+				         ''' %(int(train[5])-1, train_no))			
 
 		context = {"ticket_no":ticketno, "show":True}
 		return HttpResponse(render(request, "ticket.html", context))
@@ -503,19 +504,15 @@ def show_feedback(request):
 		return HttpResponse(render(request,"list_feedback.html",{"feedback":lst}))
 	return HttpResponseRedirect("/dashboard/")
 
-def profile_page(request, username=None):
-	if request.user.is_authenticated==False:
-		return HttpResponse(render(request,"home.html"))
-	if username==None:
-		username=request.user
+@login_required
+def profile_page(request):
+	username=request.user
 	c = connection.cursor()
 	c.execute('SELECT * FROM account WHERE Username="%s" ' %(username))
-	
 	# checking whether the given user exists or not
 	flag = c.fetchall()
 	if len(flag) == 0:
 		return HttpResponse(render(request,"profile_page.html",{"msg":True}))
-	
 	c.execute('SELECT * FROM account WHERE Username="%s" ' %(username))
 	account_usr = c.fetchone()
 	c.execute('SELECT * FROM auth_user WHERE Username="%s" ' %(username))
