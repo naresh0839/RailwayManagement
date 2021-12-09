@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Result | RailHelp</title>
+  <link rel="stylesheet" href="{% static 'css/findtrains.css' %}" /> 
+	<link rel="stylesheet" href="{% static 'css/form_login.css' %}" type="text/css" media="all" />
+	<link rel="shortcut icon" type="image/jpg" href="{% static "images/favicon.png" %}"/>
+</head>
+<body>  
+	<center> 
+        {% if show %}
+        <br>
+        <h2>Trains Available</h2>
+        <br>
+        {% for trainno in trains %}
+        <i>{{trainno.0}} SL:{{trainno.1}} 1A:{{trainno.2}} 2A:{{trainno.3}} 3A:{{trainno.4}}</i><br>
+        {% endfor %}<br>
+        <h4>To know more about these trains.</h4><br>
+        <a href="/traininfo/"> <button>Click here!</button></a>
+        <a href="/dashboard/"> <button>Dashboard!</button></a>
+        <br><br>
+        {% endif %}
+    </center>
+</body>
+</html>
+
+

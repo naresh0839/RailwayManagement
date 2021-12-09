@@ -6,12 +6,13 @@
   <title>Lorax | Train between Two Stations</title>
   <link rel="stylesheet" href="{% static 'css/findtrains.css' %}" /> 
 	<link rel="stylesheet" href="{% static 'css/form_login.css' %}" type="text/css" media="all" />
+	<link rel="shortcut icon" type="image/jpg" href="{% static "images/favicon.png" %}"/>
 </head>
 <body>  
-{% if invalid %}
+	{% if invalid %}
   		Please enter Correct Train Number. Check out Station Number <a href="\liststations\">here</a>
   	{% endif %}
-{% if notfound %}
+	{% if notfound %}
   		NO train routes in this path are there as of now! Hang in there, we will make it happen!
   	{% endif %}
 	<center> 
@@ -45,7 +46,8 @@
 			</div>
 		</div>
 	</section>
-  </center>   
+  </center> 
+
   <center>
   	
   	{% if show %}
@@ -62,5 +64,3 @@
   </center>
 </body>
 </html>
-
-

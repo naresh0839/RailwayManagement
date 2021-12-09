@@ -21,7 +21,73 @@ def aboutus(request):
 	
 @login_required
 def dashboard(request):
-    return HttpResponse(render(request, "dashboard.html"))
+	print("naresh is fucking here")
+	if request.method == "POST":
+		fstation = request.POST.get('fstation')
+		sstation = request.POST.get('sstation')
+		doj = request.POST.get('date_of_journey')
+
+		invalid = True
+
+		if fstation == sstation:
+			return HttpResponse("station code must be different")
+
+		c = connection.cursor()
+		c.execute('SELECT * FROM Station WHERE Station_Code = "%s" ' %(fstation))
+
+		if len(c.fetchall())==0:
+			invalid = False
+
+		c.execute('SELECT * FROM Station WHERE Station_Code = "%s" ' %(sstation))
+
+		if len(c.fetchall())==0:
+			invalid = False
+
+		if not invalid:
+			context = {"show":False, "invalid":True,"notfound":False}
+			return HttpResponse(render(request, "dashboard.html", context))
+
+		c.execute('''SELECT a.Train_No FROM Stoppage as a join Stoppage as b on a.Train_No = b.Train_No 
+			         WHERE a.Station_Code = "%s" and b.Station_Code = "%s" ''' %(fstation, sstation))
+		
+		trains = c.fetchall()
+		if len(trains) == 0:
+			context = {"show":False, "invalid":False, "notfound":True}
+			return HttpResponse(render(request, "dashboard.html", context))	
+		
+		# finding valid trains out of the initial list i.e. final_station's arrival time must be more than initial_station's arrival time
+		valid_trains = []
+		for x in trains:
+			c.execute('''SELECT Arrival_Time FROM STOPPAGE WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], fstation))
+			a = c.fetchone()
+			c.execute('''SELECT Arrival_Time FROM STOPPAGE WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], sstation))
+			b = c.fetchone()
+			if b is None or a is None:
+				continue
+			if b[0] > a[0]:
+				valid_trains.append(x[0])
+		
+		# for finding the number of seats available at the given specified date of travel
+		train_seats = []
+		for x in valid_trains:
+			c.execute(''' SELECT * FROM Seats WHERE Train_No = "%s" and Date = "%s" ''' %(x, doj))
+			a = c.fetchone()
+			seat_list_train = []
+			seat_list_train.append(x)
+			if a is None:
+				seat_list_train.append(0)
+				seat_list_train.append(0)
+				seat_list_train.append(0)
+				seat_list_train.append(0)
+			else:
+				seat_list_train.append(a[2])
+				seat_list_train.append(a[3])
+				seat_list_train.append(a[4])
+				seat_list_train.append(a[5])
+			train_seats.append(seat_list_train)
+		context = {"trains":train_seats, "show":True}
+		return HttpResponse(render(request, "available_trains.html", context))		
+	return HttpResponse(render(request, "dashboard.html", {"show":False,"invalid":False,"notfound":False}))
 
 @login_required
 def download_ticket(request):
@@ -157,32 +223,10 @@ def findtrains(request):
 				seat_list_train.append(a[5])
 			train_seats.append(seat_list_train)
 	
-		context = {"trains":train_seats, "show":True, "invalid":False, "notfound":False}
-		return HttpResponse(render(request, "findtrains.html", context))		
+		context = {"trains":train_seats, "show":True}
+		return HttpResponse(render(request, "available_trains.html", context))		
 	else:
 		return HttpResponse(render(request, "findtrains.html", {"show":False,"invalid":False,"notfound":False}))	
-
-@login_required
-def train_search_on_date(request):
-	if request.method == "POST":
-		start_station = request.POST.get('sstation')
-		end_station = request.POST.get('estation')
-		date_of_journey = request.POST.get('DOJ')
-
-		c = connection.cursor()
-		# c.execute() write query to find trains going from start_station to end_station
-
-		train = c.fetchall()
-		if len(train) == 0:
-			return HttpResponse(render(request, "ticket.html", {"error":"EMPTYTRAINS"}))
-
-		seats_availability = []
-		
-		for tnum in train:
-			c.execute('''SELECT * FROM Seats WHERE Train_No = "%s" and Date = "%s"''' %(tnum, date_of_journey))
-			seats_availability.add(c[0])
-
-		return HttpResponse(render((request), "tickets_seats_availability.html", {"doj":date_of_journey, "seats_avail":seats_availability}))	
 
 @login_required
 def ticket(request):
@@ -384,10 +428,6 @@ def login_user(request):
 		else:
 			return HttpResponse(render(request, "form_login.html", {"message":"NOPERMISSION"}))
 	return HttpResponse(render(request, "form_login.html", {"message":"NULL"}))
-
-@login_required
-def dashboard(request):
-	return HttpResponse(render(request, "dashboard.html"))
 
 def list_trains(request):
 	c=connection.cursor()
