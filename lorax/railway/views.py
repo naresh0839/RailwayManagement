@@ -21,7 +21,6 @@ def aboutus(request):
 	
 @login_required
 def dashboard(request):
-	print("naresh is fucking here")
 	if request.method == "POST":
 		fstation = request.POST.get('fstation')
 		sstation = request.POST.get('sstation')
