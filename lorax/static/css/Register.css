@@ -1,0 +1,142 @@
+ .u-section-1 {
+  min-height: 690px;
+}
+
+.u-section-1 .u-layout-wrap-1 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.u-section-1 .u-image-1 {
+  min-height: 690px;
+  background-image: url("../images/2efd1bf58d5cbda9224ca58787e974942c8c82feadf1ebe173f986e126259d6f1e011b605941c1afc2aa6c07739db100ea6db81d29cc8db4a7dbd0_12801.jpg");
+  background-position: 50% 50%;
+}
+
+.u-section-1 .u-container-layout-1 {
+  padding: 30px;
+}
+
+.u-section-1 .u-layout-cell-2 {
+  min-height: 690px;
+  background-image: none;
+}
+
+.u-section-1 .u-container-layout-2 {
+  padding: 2px 28px;
+}
+
+.u-section-1 .u-group-1 {
+  width: 584px;
+  min-height: 514px;
+  margin: 80px auto 0 3px;
+}
+
+.u-section-1 .u-container-layout-3 {
+  padding: 30px 7px;
+}
+
+.u-section-1 .u-text-1 {
+  font-size: 2.25rem;
+  margin: 24px auto 0;
+}
+
+.u-section-1 .u-form-1 {
+  height: 297px;
+  width: 570px;
+  margin: 24px auto 0;
+}
+
+.u-section-1 .u-form-group-2 {
+  margin-left: 0;
+}
+
+.u-section-1 .u-form-group-4 {
+  margin-left: 0;
+}
+
+.u-section-1 .u-btn-1 {
+  border-style: solid;
+  letter-spacing: 0px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1199px) {
+   .u-section-1 {
+    min-height: 599px;
+  }
+
+  .u-section-1 .u-image-1 {
+    min-height: 569px;
+  }
+
+  .u-section-1 .u-layout-cell-2 {
+    min-height: 569px;
+  }
+
+  .u-section-1 .u-group-1 {
+    width: 414px;
+    margin-left: 0;
+  }
+
+  .u-section-1 .u-form-1 {
+    width: 400px;
+  }
+}
+
+@media (max-width: 991px) {
+   .u-section-1 {
+    min-height: 499px;
+  }
+
+  .u-section-1 .u-image-1 {
+    min-height: 436px;
+  }
+
+  .u-section-1 .u-layout-cell-2 {
+    min-height: 100px;
+  }
+
+  .u-section-1 .u-group-1 {
+    width: 304px;
+  }
+
+  .u-section-1 .u-form-1 {
+    width: 290px;
+  }
+}
+
+@media (max-width: 767px) {
+   .u-section-1 {
+    min-height: 988px;
+  }
+
+  .u-section-1 .u-image-1 {
+    min-height: 654px;
+  }
+
+  .u-section-1 .u-container-layout-1 {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .u-section-1 .u-container-layout-2 {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .u-section-1 .u-text-1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 575px) {
+   .u-section-1 {
+    min-height: 622px;
+  }
+
+  .u-section-1 .u-image-1 {
+    min-height: 412px;
+  }
+}

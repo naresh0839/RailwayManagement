@@ -388,7 +388,8 @@ def signup(request):
 		password = request.POST.get('password')
 		email = request.POST.get('email')
 		phone_number = request.POST.get('phone_number')
-		
+		print(username)
+		print(password)
 		c = connection.cursor()
 		c.execute('SELECT * FROM account WHERE username = "%s" ' %(username))
 		users = c.fetchall()
@@ -402,13 +403,13 @@ def signup(request):
 			if num_of_user[0] == 0:
 				c.execute('UPDATE auth_user SET is_superuser = 1 WHERE username = "%s"' % (username))
 				c.execute('UPDATE auth_user SET is_staff = 1 WHERE username = "%s"' % (username))
-
 			activation_code = get_random_string(30)
 			c.execute('INSERT INTO account(Username, phone_number, activation_code) VALUES("%s", "%s", "%s")' % (username, phone_number, activation_code))
 			# now we need to send a email activation link
 			message_body = "Hello " + username + ", Please find the activation link : \n"
 			message_body += "http://127.0.0.1:8000/activation/?code=" + activation_code
 			send_mail("Welcome to RailHelp", message_body, 'naresh0839@gmail.com', [email])
+			print("success")
 			return HttpResponse(render(request, "home.html", {"message":"SUCCESS"}))
 		except Exception as e:
 			return HttpResponse(render(request,"form_signup.html", {"message":"FAILURE"}))
