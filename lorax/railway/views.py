@@ -57,9 +57,9 @@ def dashboard(request):
 		# finding valid trains out of the initial list i.e. final_station's arrival time must be more than initial_station's arrival time
 		valid_trains = []
 		for x in trains:
-			c.execute('''SELECT Arrival_Time FROM STOPPAGE WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], fstation))
+			c.execute('''SELECT Arrival_Time FROM Stoppage WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], fstation))
 			a = c.fetchone()
-			c.execute('''SELECT Arrival_Time FROM STOPPAGE WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], sstation))
+			c.execute('''SELECT Arrival_Time FROM Stoppage WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], sstation))
 			b = c.fetchone()
 			if b is None or a is None:
 				continue
@@ -194,9 +194,9 @@ def findtrains(request):
 		# finding valid trains out of the initial list i.e. final_station's arrival time must be more than initial_station's arrival time
 		valid_trains = []
 		for x in trains:
-			c.execute('''SELECT Arrival_Time FROM STOPPAGE WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], fstation))
+			c.execute('''SELECT Arrival_Time FROM Stoppage WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], fstation))
 			a = c.fetchone()
-			c.execute('''SELECT Arrival_Time FROM STOPPAGE WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], sstation))
+			c.execute('''SELECT Arrival_Time FROM Stoppage WHERE Train_No = "%s" and Station_Code = "%s" ''' %(x[0], sstation))
 			b = c.fetchone()
 			if b is None or a is None:
 				continue
