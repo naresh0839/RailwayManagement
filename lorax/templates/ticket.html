@@ -10,34 +10,54 @@
 <body>  
   <center>
     {% if not show %}
-    <h1> Book Tickets </h1>
- <form method="POST">{% csrf_token %}
- <br><br>
-  <b>FIRST NAME</b><br>
-  <input type="text" name="fname"><br><br>
-  <b>LAST NAME</b><br>
-  <input type="text" name="lname"><br><br>
-  <b>GENDER</b><br>
-  <select name="gender">
-    <option>Male</option>
-    <option>Female</option>
-  </select><br> <br> 
-  <b>AGE</b><br>
-  <input type="number" name="age" min="6"><br><br>
-  <b>CLASS</b><br>
-  <select name="tclass">
-    <option>sleeper</option>
-    <option>first class ac</option>
-    <option>second class ac</option>
-    <option>third class ac</option>
-  </select><br> <br> 
-  <b>PHONE NO</b><br>
-  <input type="text" name="number"><br><br>  
-  <input type="submit" >
-</form><br>
-<a href="/logout/"> <button>logout </button></a><br>
+    <h1> Book Tickets for {{seat_list.0}} on {{doj}} </h1>
+
+    <br>
+    {% if no_seats %}
+      <h3>There are not seats Available for the selected train and date of journey</h3>
+    {% endif %}
+
+    {% if not no_seats %}
+      <form method="POST">{% csrf_token %}
+        <br><br>
+        <b>FIRST NAME</b><br>
+        <input type="text" name="fname"><br><br>
+        <b>LAST NAME</b><br>
+        <input type="text" name="lname"><br><br>
+        <b>GENDER</b><br>
+        <select name="gender">
+          <option>Male</option>
+          <option>Female</option>
+        </select><br> <br> 
+        <b>AGE</b><br>
+        <input type="number" name="age" min="6"><br><br>
+        <b>CLASS</b><br>
+        <select name="tclass">
+          {% if seat_list.1 != 0 %}
+            <option>sleeper</option>
+          {% endif %}
+          {% if seat_list.2 != 0 %}
+            <option>first class ac</option>
+          {% endif %}
+          {% if seat_list.3 != 0 %}
+            <option>second class ac</option>
+          {% endif %}
+          {% if seat_list.4 != 0 %}
+            <option>third class ac</option>
+          {% endif %}
+        </select><br> <br> 
+        <b>PHONE NO</b><br>
+        <input type="text" name="number"><br><br>  
+        {% if seat_list.5 != 0 %}
+          <input type="submit">
+        {% endif %}
+      </form>
+    {% endif %}
+      <br>
 <p>Go back!! <a href="/dashboard/">Dashboard</a></p>
+  
 {% endif %}
+
 {% if show %}
   <div class="main">
         <div class="logo">
@@ -58,6 +78,6 @@
       <a href="/dashboard/" class="btn">Dashboard</a>
   </div> 
 {% endif %}
-    </center>
+</center>
 </body>
 </html>

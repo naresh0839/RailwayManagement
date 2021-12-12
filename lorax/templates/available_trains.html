@@ -12,11 +12,11 @@
 	<center> 
         {% if show %}
         <br>
-        <h2>Trains Available</h2>
+        <h2>Trains Available for {{date_of_journey}}</h2>
         <br>
         {% for trainno in trains %}
         <i>{{trainno.0}} SL:{{trainno.1}} 1A:{{trainno.2}} 2A:{{trainno.3}} 3A:{{trainno.4}} 
-          <a href="/ticket/{{trainno.0}}"> <button>Book Ticket here!</button></a>
+          <a href="/ticket/{{trainno.0}}/{{date_of_journey}}"> <button>Book Ticket here!</button></a>
         </i><br>
         {% endfor %}<br>
         <h4>To know more about these trains.</h4><br>

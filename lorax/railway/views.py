@@ -84,7 +84,7 @@ def dashboard(request):
 				seat_list_train.append(a[4])
 				seat_list_train.append(a[5])
 			train_seats.append(seat_list_train)
-		context = {"trains":train_seats, "show":True}
+		context = {"trains":train_seats, "show":True, "date_of_journey":doj}
 		return HttpResponse(render(request, "available_trains.html", context))		
 	return HttpResponse(render(request, "dashboard.html", {"show":False,"invalid":False,"notfound":False}))
 
@@ -228,9 +228,11 @@ def findtrains(request):
 		return HttpResponse(render(request, "findtrains.html", {"show":False,"invalid":False,"notfound":False}))	
 
 @login_required
-def ticket(request, train_no=None):
+def ticket(request, train_no=None, doj=None):
 	if train_no==None:
 		return HttpResponseRedirect("/dashboard/")
+	if doj==None:
+		return HttpResponseRedirect("/dashboard")
 	if request.method == "POST":
 		fname = request.POST.get('fname')
 		lname = request.POST.get('lname')
@@ -241,6 +243,7 @@ def ticket(request, train_no=None):
 		number = request.POST.get('number')
 
 		c = connection.cursor()
+
 		c.execute("SELECT * FROM Train where Train_No = '%s' " %(train_no))
 
 		train = c.fetchall()
@@ -354,7 +357,28 @@ def ticket(request, train_no=None):
 		context = {"ticket_no":ticketno, "show":True}
 		return HttpResponse(render(request, "ticket.html", context))
 	else:
-		return HttpResponse(render(request, "ticket.html", {"show":False}))	
+		c = connection.cursor()
+		c.execute(''' SELECT * FROM Seats WHERE Train_No = "%s" and Date = "%s" ''' %(train_no, doj))
+		a = c.fetchone()
+		seat_list = []
+		seat_list.append(train_no)
+		total_seats = 0
+		if a is None:
+			seat_list.append(0)
+			seat_list.append(0)
+			seat_list.append(0)
+			seat_list.append(0)
+			seat_list.append(0)
+		else:
+			seat_list.append(a[2])
+			seat_list.append(a[3])
+			seat_list.append(a[4])
+			seat_list.append(a[5])
+			seat_list.append(a[2] + a[3] + a[4] + a[5])
+		if seat_list[5] == 0:
+			return HttpResponse(render(request, "ticket.html", {"seat_list":seat_list, "show":False, "doj":doj, "no_seats":True}))
+		else:
+			return HttpResponse(render(request, "ticket.html", {"seat_list":seat_list, "show":False, "doj":doj, "no_seats":False}))
 
 def signup(request):
 	if request.user.is_authenticated:

@@ -47,6 +47,7 @@ urlpatterns = [
     # Book Ticket Implementation
     path('ticket/',views.ticket),
     path('ticket/<str:train_no>/',views.ticket),
+    path('ticket/<str:train_no>/<str:doj>/',views.ticket),
 
     # Forgot Password Implementation
     path('reset_password/', 
