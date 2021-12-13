@@ -11,6 +11,8 @@ CREATE TABLE `account` (
   `phone_number` char(10) NOT NULL DEFAULT '',
   `activation_code` char(255) NOT NULL,
   `enabled` char(1) NOT NULL DEFAULT 'N',
+  `Name` varchar(100) NOT NULL DEFAULT '--BLANK--',
+  `Location` varchar(1000) NOT NULL DEFAULT '--BLANK--',
   PRIMARY KEY (`Username`)
 );
 

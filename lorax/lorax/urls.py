@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^listfeedback/',views.show_feedback),
     url(r'^activation/',views.activation),
     url(r'^dashboard/',views.dashboard),
-
+    url(r'^editprofile/',views.edit_profile),
     # Profile Page Implementation
     path('profile/',views.profile_page),
 

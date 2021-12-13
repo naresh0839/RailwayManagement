@@ -408,9 +408,9 @@ def signup(request):
 			# now we need to send a email activation link
 			message_body = "Hello " + username + ", Please find the activation link : \n"
 			message_body += "http://127.0.0.1:8000/activation/?code=" + activation_code
-			send_mail("Welcome to RailHelp", message_body, 'naresh0839@gmail.com', [email])
+			send_mail("Welcome to RailHelp", message_body, 'nicebharat00@gmail.com', [email])
 			print("success")
-			return HttpResponse(render(request, "home.html", {"message":"SUCCESS"}))
+			return render(request, "home.html", {"message":"SUCCESS"})
 		except Exception as e:
 			return HttpResponse(render(request,"form_signup.html", {"message":"FAILURE"}))
 		finally:
@@ -542,3 +542,23 @@ def profile_page(request):
 	c.execute('SELECT * FROM auth_user WHERE Username="%s" ' %(username))
 	auth_user_usr = c.fetchone()
 	return HttpResponse(render(request,"profile_page.html",{"userf":account_usr,"users":auth_user_usr,"msg":False}))
+
+@login_required
+def edit_profile(request):
+	c = connection.cursor()
+	if request.method=="POST":
+		name = request.POST.get("name")
+		phn = request.POST.get("phone")
+		address = request.POST.get("address")
+		print(name)
+		username = request.user.username
+		c.execute('''UPDATE account set Name = "%s" WHERE Username  = "%s"
+				         ''' %(name, username))
+		c.execute('''UPDATE account set phone_number = "%s" WHERE Username  = "%s"
+				         ''' %(phn, username))
+		c.execute('''UPDATE account set Location = "%s" WHERE Username  = "%s"
+				         ''' %(address, username))
+
+	c.execute('SELECT * FROM account WHERE Username="%s" ' %(request.user.username))
+	user = c.fetchone()
+	return HttpResponse(render(request,"edit_profile.html",{"userf":user}))

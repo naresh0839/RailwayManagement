@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html style="font-size: 16px;">
   <head>
@@ -8,11 +7,11 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
-    <title>Profile | Rail Help</title>
-    <link rel="stylesheet" href="{% static 'css/nicepage.css' %}" media="screen">
-<link rel="stylesheet" href="{% static 'css/Profile.css' %}" media="screen">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="{% static 'css/nicepage1.css' %}" media="screen">
+<link rel="stylesheet" href="{% static 'css/Edit-Profile.css' %}" media="screen">
     <script class="u-script" type="text/javascript" src="{% static 'js/jquery-1.9.1.min.js' %}" defer=""></script>
-    <script class="u-script" type="text/javascript" src="{% static 'js/nicepage.js' %}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{% static 'js/nicepage1.js' %}" defer=""></script>
     <meta name="generator" content="Nicepage 4.1.6, nicepage.com">
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
     
@@ -21,14 +20,14 @@
 		"@context": "http://schema.org",
 		"@type": "Organization",
 		"name": "",
-		"logo": "images/default-logo.png"
+		"logo": "{% static 'images/logo2.png' %}"
 }</script>
     <meta name="theme-color" content="#478ac9">
-    <meta property="og:title" content="Profile">
+    <meta property="og:title" content="Edit Profile">
     <meta property="og:type" content="website">
   </head>
   <body class="u-body"><header class="u-clearfix u-header u-header" id="sec-3c5f"><div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <a href="/dashboard" class="u-image u-logo u-image-1">
+        <a href="https://nicepage.com" class="u-image u-logo u-image-1">
           <img src="{% static 'images/logo.png' %}" class="u-logo-image u-logo-image-1">
         </a>
         <nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
@@ -50,7 +49,7 @@
               <div class="u-inner-container-layout u-sidenav-overflow">
                 <div class="u-menu-close"></div>
                 <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="/profile">Profile</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="/editprofile">Edit Profile</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="/profile"></a>
 </li></ul>
               </div>
             </div>
@@ -58,40 +57,32 @@
           </div>
         </nav>
       </div></header>
-    <section class="u-align-center u-clearfix u-white u-section-1" id="carousel_16b3">
-      <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <h1 class="u-text u-text-1">Profile</h1>
-        <div class="u-clearfix u-layout-wrap u-layout-wrap-1">
-          <div class="u-gutter-0 u-layout">
-            <div class="u-layout-col">
-              <div class="u-align-center u-container-style u-layout-cell u-size-20 u-layout-cell-1">
-                <div class="u-container-layout u-valign-bottom u-container-layout-1">
-                  <div alt="" class="u-image u-image-circle u-image-1" data-image-width="512" data-image-height="512"></div>
-                  <p class="u-text u-text-default u-text-2" spellcheck="false">{{userf.0}}</p>
-                </div>
-              </div>
-              <div class="u-align-center u-container-style u-layout-cell u-palette-4-base u-size-20 u-layout-cell-2">
-                <div class="u-container-layout u-valign-middle u-container-layout-2">
-                  <h3 class="u-text u-text-default u-text-3" spellcheck="false">User D<span style="font-weight: 700;"></span>etails
-                  </h3>
-                </div>
-              </div>
-              <div class="u-align-center u-container-style u-layout-cell u-size-20 u-layout-cell-3">
-                <div class="u-container-layout u-container-layout-3">
-                  <p class="u-text u-text-4" spellcheck="false">
-                    <span style="font-weight: 700;">Name: </span>
-                    <br>{{userf.5}}<br><b>Phone Number:&nbsp;</b>
-                    <br>{{userf.2}}<br>
-                    <span style="font-weight: 700;">Email Address:<br>
-                    </span>{{users.7}}<br>
-                    <span style="font-weight: 700;">Adress: </span>
-                    <br>{{userf.6}}
-                  </p>
-                  <a href="/editprofile" data-page-id="1111947" class="u-border-2 u-border-hover-palette-4-dark-2 u-border-palette-4-base u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-palette-4-base u-btn-1">edit profile</a>
-                </div>
-              </div>
+    <section class="u-clearfix u-section-1" id="sec-d7e0">
+      <div class="u-align-left u-clearfix u-sheet u-sheet-1">
+        <center><h3 class="u-text u-text-default u-text-1">Account Settings of {{userf.0}}</h3></center>
+        <div class="u-image u-image-circle u-preserve-proportions u-image-1" alt="" data-image-width="512" data-image-height="512"></div>
+        <div class="u-form u-form-1">
+          <form action="#" method="POST" class="u-clearfix u-form-spacing-15 u-form-vertical u-inner-form" style="padding: 15px;" source="email" name="form"> {% csrf_token %}
+            <input type="hidden" id="siteId" name="siteId" value="1109699">
+            <input type="hidden" id="pageId" name="pageId" value="1111947">
+            <div class="u-form-group u-form-name">
+              <label for="name-6797" class="u-label">Name</label>
+              <input type="text" placeholder="Name" id="name" name="name" class="u-border-3 u-border-palette-4-light-1 u-input u-input-rectangle u-radius-12" required="" value="{{userf.5}}">
             </div>
-          </div>
+            <div class="u-form-email u-form-group">
+              <label for="email-6797" class="u-label">Phone Number</label>
+              <input type="tel" pattern="\+?\d{0,2}[\s\(\-]?([0-9]{3})[\s\)\-]?([\s\-]?)([0-9]{3})[\s\-]?([0-9]{2})[\s\-]?([0-9]{2})" id="phone" name="phone" class="u-border-3 u-border-palette-4-light-1 u-input u-input-rectangle u-radius-12" required="" placeholder="Edit Phone Number" value="{{userf.2}}">
+            </div>
+            <div class="u-form-group u-form-message">
+              <label for="message-6797" class="u-label">Address</label>
+              <textarea placeholder="Format : Address, City, Pincode" rows="4" cols="50" id="address" name="address" class="u-border-3 u-border-palette-4-light-1 u-input u-input-rectangle u-radius-12" required=""></textarea>
+            </div>
+            <div class="u-align-center u-form-group u-form-submit">
+              <a href="/profile" class="u-border-4 u-border-hover-palette-4-dark-1 u-border-palette-4-light-1 u-btn u-btn-round u-btn-submit u-button-style u-hover-white u-radius-17 u-text-hover-palette-4-dark-1 u-text-palette-4-light-1 u-white u-btn-1">Submit</a>
+              <input type="submit" value="submit" class="u-form-control-hidden">
+            </div>
+            <input type="hidden" value="" name="recaptchaResponse">
+          </form>
         </div>
       </div>
     </section>
@@ -102,4 +93,3 @@
       </div></footer>
   </body>
 </html>
-
